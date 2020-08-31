@@ -6,6 +6,7 @@ import java.util.Map;
 
 import de.fraunhofer.iais.eis.Message;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import it.eng.idsa.multipart.processor.MultipartMessageProcessor;
 
 /**
  * 
@@ -49,7 +50,8 @@ public class MultipartMessage {
 	
 	public String getHeaderContentString() {
 		try {
-			return new Serializer().serializePlainJson(this.headerContent);
+			// return new Serializer().serializePlainJson(this.headerContent);
+			return MultipartMessageProcessor.serializeToPlainJson(this.headerContent);
 		} catch (IOException e) {
 			//TODO: throw exception
 			return "";

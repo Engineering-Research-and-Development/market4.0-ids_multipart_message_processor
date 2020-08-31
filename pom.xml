@@ -18,7 +18,7 @@
     	</repositories>
 	<properties>
 		<java.version>11</java.version>
-		<information.model.version>2.1.0-SNAPSHOT</information.model.version>
+		<information.model.version>4.0.0</information.model.version>
 		<log4j.version>2.12.1</log4j.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
