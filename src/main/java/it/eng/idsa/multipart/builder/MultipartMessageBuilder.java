@@ -34,6 +34,7 @@ public class MultipartMessageBuilder {
 	private String payloadContent = null;
 	private Map<String, String> signatureHeader = new HashMap<>();
 	private String signatureContent = null;
+	private String token = null;
 	
 	public MultipartMessageBuilder withHttpHeader(Map<String, String> httpHeaders) {
 		this.httpHeaders = httpHeaders;
@@ -42,6 +43,11 @@ public class MultipartMessageBuilder {
 	
 	public MultipartMessageBuilder withHeaderHeader(Map<String, String> headerHeader) {
 		this.headerHeader = headerHeader;
+		return this;
+	}
+	
+	public MultipartMessageBuilder withToken(String token) {
+		this.token = token;
 		return this;
 	}
 	
@@ -98,7 +104,8 @@ public class MultipartMessageBuilder {
 				                    payloadHeader, 
 				                    payloadContent,
 				                    signatureHeader,
-				                    signatureContent
+				                    signatureContent,
+				                    token
 				                    );
 	}
 

@@ -26,6 +26,7 @@ public class MultipartMessage {
 	private String payloadContent = null;
 	private Map<String, String> signatureHeader= new HashMap<>();
 	private String signatureContent = null;
+	private String token = null;
 	
 	public MultipartMessage() {
 		super();
@@ -33,7 +34,7 @@ public class MultipartMessage {
 	
 	public MultipartMessage(Map<String, String> httpHeaders, Map<String, String> headerHeader, Message headerContent,
 			Map<String, String> payloadHeader, String payloadContent, Map<String, String> signatureHeader,
-			String signatureContent) {
+			String signatureContent, String token) {
 		super();
 		this.httpHeaders = httpHeaders;
 		this.headerHeader = headerHeader;
@@ -42,10 +43,15 @@ public class MultipartMessage {
 		this.payloadContent = payloadContent;
 		this.signatureHeader = signatureHeader;
 		this.signatureContent = signatureContent;
+		this.token = token;
 	}
 
 	public Map<String, String> getHttpHeaders() {
 		return httpHeaders;
+	}
+	
+	public String getToken() {
+		return this.token;
 	}
 	
 	public String getHeaderContentString() {

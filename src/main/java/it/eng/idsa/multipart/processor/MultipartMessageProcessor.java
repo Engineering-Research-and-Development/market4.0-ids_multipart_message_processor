@@ -295,6 +295,12 @@ public class MultipartMessageProcessor {
         String partContentLength = part.parallelStream().filter(line -> predicateLineContentLength.test(line.toLowerCase())).findFirst().get();
         partHeader.put(MultipartMessageKey.CONTENT_LENGTH.label, partContentLength);
 
+		Optional<String> partContentType = part.parallelStream()
+				.filter(line -> predicateLineContentType.test(line.toLowerCase())).findFirst();
+		if (partContentType.isPresent()) {
+			partHeader.put(MultipartMessageKey.CONTENT_TYPE.label, partContentType.get());
+		}
+
         return partHeader;
     }
 
@@ -305,6 +311,7 @@ public class MultipartMessageProcessor {
                                 (
                                         !predicateLineContentDisposition.test(part.get(index).toLowerCase()) &&
                                                 !predicateLineContentLength.test(part.get(index).toLowerCase()) &&
+                                                !predicateLineContentType.test(part.get(index).toLowerCase()) &&
                                                 !predicateLineEmpty.test(part.get(index))
                                 )
                         )
