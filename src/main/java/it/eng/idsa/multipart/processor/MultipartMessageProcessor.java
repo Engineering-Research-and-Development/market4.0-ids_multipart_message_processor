@@ -4,6 +4,8 @@ import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
 import it.eng.idsa.multipart.builder.MultipartMessageBuilder;
 import it.eng.idsa.multipart.domain.MultipartMessage;
 import it.eng.idsa.multipart.util.MultipartMessageKey;
+
+import org.apache.http.entity.ContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,11 +83,34 @@ public class MultipartMessageProcessor {
         return multipartMessage;
     }
 
+    /**
+     * Converts multipart message to string, without header ContentType
+     * For more options regarding including header Content-Type check {@link #multipartMessagetoString(MultipartMessage message, boolean includeHttpHeaders, Boolean includeJsonLd) {}
+     * @param message to be converted
+     * @return
+     */
     public static String multipartMessagetoString(MultipartMessage message) {
-        return multipartMessagetoString(message, true);
+        return multipartMessagetoString(message, true, null);
+    }
+    
+    /**
+     * Converts multipart message to string, without header ContentType, with http headers present
+     * @param message
+     * @param includeHttpHeaders
+     * @return
+     */
+    public static String multipartMessagetoString(MultipartMessage message, boolean includeHttpHeaders) {
+    	return multipartMessagetoString(message, includeHttpHeaders, null);
     }
 
-    public static String multipartMessagetoString(MultipartMessage message, boolean includeHttpHeaders) {
+    /**
+     * Converts multipart message to string
+     * @param message to be converted to string
+     * @param includeHttpHeaders if present, overriding default ones
+     * @param includeJsonLd if true - content type is application/json+ld</br>if false - ContentType=application/json; charset=UTF-8</br> if null - Content-Type is not present
+     * @return
+     */
+    public static String multipartMessagetoString(MultipartMessage message, boolean includeHttpHeaders, Boolean includeJsonLd) {
 
         StringBuilder multipartMessageString = new StringBuilder();
         String boundary = generateBoundary();
@@ -117,7 +142,7 @@ public class MultipartMessageProcessor {
         // Append headerHeader
         String headerHeaderString;
         if (message.getHeaderHeader().isEmpty()) {
-            headerHeaderString = setDefaultPartHeader(message.getHeaderContentString(), MultipartMessageKey.NAME_HEADER.label);
+            headerHeaderString = setDefaultHeaders(message.getHeaderContentString(), MultipartMessageKey.NAME_HEADER.label, includeJsonLd);
         } else {
             headerHeaderString = message.getHeaderHeader()
                     .entrySet()
@@ -195,6 +220,18 @@ public class MultipartMessageProcessor {
         return defaultHttpHeadersToString;
     }
 
+    private static String setDefaultHeaders(String headerContentString, String partName, Boolean includeJsonLD) {
+        StringBuffer defaultHeaderHeaderString = new StringBuffer();
+        defaultHeaderHeaderString.append(DEFAULT_CONTENT_DISPOSITION + "\"" + partName + "\"" + System.lineSeparator());
+        defaultHeaderHeaderString.append(MultipartMessageKey.CONTENT_LENGTH.label + ": " + headerContentString.length() + System.lineSeparator());
+        if(includeJsonLD != null && includeJsonLD) {
+        	defaultHeaderHeaderString.append(MultipartMessageKey.CONTENT_TYPE.label + ": " + "application/json+ld" + System.lineSeparator());
+        } else if(includeJsonLD != null && !includeJsonLD){
+        	defaultHeaderHeaderString.append(MultipartMessageKey.CONTENT_TYPE.label + ": " + ContentType.APPLICATION_JSON + System.lineSeparator());
+        }
+        return defaultHeaderHeaderString.toString();
+    }
+    
     private static String setDefaultPartHeader(String headerContentString, String partName) {
         StringBuffer defaultHeaderHeaderString = new StringBuffer();
         defaultHeaderHeaderString.append(DEFAULT_CONTENT_DISPOSITION + "\"" + partName + "\"" + System.lineSeparator());
