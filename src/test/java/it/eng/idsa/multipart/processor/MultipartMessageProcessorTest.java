@@ -24,7 +24,9 @@ public class MultipartMessageProcessorTest {
 	private String RESOURCE_MESSAGE_PATH = "./src/test/resources/message/";
 	private String MULTIPART_MESSAGE_NAME = "IDS-multipart.txt";
 	
-	private Map<String, String> expectedHttpHeader  = new HashMap<String, String>() {{
+	private Map<String, String> expectedHttpHeader  = new HashMap<String, String>() {
+		private static final long serialVersionUID = 6644844396388888064L;
+	{
 	    put(MultipartMessageKey.CONTENT_TYPE.label, "multipart/mixed; boundary=CQWZRdCCXr5aIuonjmRXF-QzcZ2Kyi4Dkn6;charset=UTF-8");
 	    put(MultipartMessageKey.FORWARD_TO.label, "Forward-To: broker");
 	}}; 
@@ -41,17 +43,23 @@ public class MultipartMessageProcessorTest {
 	private String expectedPayloadContentString = "{\"catalog.offers.0.resourceEndpoints.path\":\"/pet\"}";
 	private String expectedSignatureContentString = "{\"signature.resourceEndpoints.path\":\"/signature\"}";
 	
-	private Map<String, String> expectedHeaderHeader  = new HashMap<String, String>() {{
+	private Map<String, String> expectedHeaderHeader  = new HashMap<>() {
+		private static final long serialVersionUID = 3266167283830886491L;
+	{
 	    put(MultipartMessageKey.CONTENT_DISPOSITION.label, "form-data; name=\"header\"");
 	    put(MultipartMessageKey.CONTENT_LENGTH.label, "534");
 	}};
 	
-	private Map<String, String> expectedPayloadHeader  = new HashMap<String, String>() {{
+	private Map<String, String> expectedPayloadHeader  = new HashMap<>() {
+		private static final long serialVersionUID = -7084243556730137950L;
+	{
 	    put(MultipartMessageKey.CONTENT_DISPOSITION.label, "form-data; name=\"payload\"");
 	    put(MultipartMessageKey.CONTENT_LENGTH.label, "50");
 	}};
 	
-	private Map<String, String> expectedSignatureHeader  = new HashMap<String, String>() {{
+	private Map<String, String> expectedSignatureHeader  = new HashMap<>() {
+		private static final long serialVersionUID = -4884253312953549157L;
+	{
 	    put(MultipartMessageKey.CONTENT_DISPOSITION.label, "form-data; name=\"signature\"");
 	    put(MultipartMessageKey.CONTENT_LENGTH.label, "49");
 	}};
